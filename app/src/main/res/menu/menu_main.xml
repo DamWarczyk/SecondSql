@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.secondsql.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/clear_Database"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/clearDatabase"
         app:showAsAction="never" />
 </menu>

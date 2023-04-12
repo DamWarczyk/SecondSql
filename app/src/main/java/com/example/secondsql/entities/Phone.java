@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import lombok.NonNull;
+import io.reactivex.rxjava3.annotations.NonNull;
 
 
 @Entity(tableName = "PhonesDB")
@@ -25,7 +25,7 @@ public class Phone {
     @ColumnInfo(name = "AndroidVersion")
     private String androidVer;
 
-    @ColumnInfo(name = "WebPagr")
+    @ColumnInfo(name = "WebPage")
     private String web;
 
     public Phone(Long id, @NonNull String producer, @NonNull String model, String androidVer, String web) {
@@ -36,7 +36,7 @@ public class Phone {
         this.web = web;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

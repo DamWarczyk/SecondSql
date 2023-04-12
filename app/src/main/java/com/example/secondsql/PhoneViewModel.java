@@ -37,6 +37,8 @@ public class PhoneViewModel extends AndroidViewModel {
         repository.deletePhone(phone);
     }
 
+    public void deleteAllPhones(){repository.deleteAllPhones();}
+
     public LiveData<List<Phone>> getPhones(){
         return repository.getPhones();
     }

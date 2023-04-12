@@ -24,6 +24,9 @@ public interface PhoneDAO {
             "Model LIKE :last LIMIT 1")
     Phone findByName(String first, String last);
 
+    @Query("DELETE FROM PhonesDB")
+    public void deleteAll();
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void insert(Phone phone);
 

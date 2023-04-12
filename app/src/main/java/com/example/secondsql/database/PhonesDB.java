@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Phone.class}, version = 1)
+@Database(entities = {Phone.class}, version = 2)
 public abstract class PhonesDB extends RoomDatabase {
     public abstract PhoneDAO phoneDAO();
 
@@ -29,6 +29,8 @@ public abstract class PhonesDB extends RoomDatabase {
                                     PhonesDB.class, "PhoneDataBase")
                             .addCallback(phonesDatabaseCallback )
                             .fallbackToDestructiveMigration()
+                            //TODO: Jest tanio? Jest tanio, Jest dobrze? Jest tanio, tego tutaj nie powinno się stosować
+                            .allowMainThreadQueries()
                             .build();
                 }
             }

@@ -20,6 +20,8 @@ public class PhonesRepo {
         mAllPhones = mPhoneDAO.getAll();
     }
 
+
+
     public LiveData<List<Phone>> getAllPhones() {
         return mPhoneDAO.getAll();
     }
@@ -38,5 +40,9 @@ public class PhonesRepo {
 
     public LiveData<List<Phone>> getPhones(){
         return mPhoneDAO.getAll();
+    }
+
+    public void deleteAllPhones(){
+        mPhoneDAO.deleteAll();
     }
 }
