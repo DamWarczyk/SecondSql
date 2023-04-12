@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.example.secondsql.databinding.FragmentItemListBinding;
 import com.example.secondsql.entities.Phone;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Objects;
@@ -50,6 +52,7 @@ public class PhoneFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentItemListBinding.inflate(inflater, container, false);
         return binding.getRoot();
+
     }
 
     @Override
@@ -78,6 +81,14 @@ public class PhoneFragment extends Fragment {
                 }
             }
         });
+
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(PhoneFragment.this)
+                        .navigate(R.id.action_phoneFragment_to_SecondFragment);
+            }
+        });
     }
 
     Observer<List<Phone>> phoneListUpdateObserver = new Observer<>() {
@@ -86,6 +97,8 @@ public class PhoneFragment extends Fragment {
             adapter.setPhonesList(phones);
         }
     };
+
+
 
 
     @Override
