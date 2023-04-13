@@ -50,12 +50,11 @@ public abstract class PhonesDB extends RoomDatabase {
             databaseWriteExecutor.execute(() -> {
                 PhoneDAO dao = INSTANCE.phoneDAO();
                 List<Phone> phones = List.of(
+                        new Phone(null,"Pixel", "7 Pro", "14", "https://store.google.com/us/product/pixel_7_pro?hl=en-US"),
+                        new Phone(null, "Samsung", "Galaxy a51", "13", "https://www.samsung.com/pl/smartphones/galaxy-a/galaxy-a53-5g-awesome-blue-128gb-sm-a536blbneue/"),
+                        new Phone(null, "Huawei", "Mate50 PRO", "10", "https://consumer.huawei.com/pl/phones/mate50-pro/"),
                         new Phone(null, "Samsung", "Galaxy S23 Ultra", "13", "https://www.samsung.com/pl/smartphones/galaxy-s23-ultra/buy/"),
-                        new Phone(null, "Huawei", "Mate 20 lite", "10", "https://www.mgsm.pl/pl/katalog/huawei/mate20lite/"),
-                        new Phone(null, "Nokia", "C12 PRO", "12 Go", "https://www.mgsm.pl/pl/katalog/nokia/c12pro/"),
-                        new Phone(null,"Sony", "Xperia J", "4.0 Ice Cream Sandwich", "https://www.mgsm.pl/pl/katalog/sony/xperiaj/"),
-                        new Phone(null, "OnePlus", "Nord 2T 5G", "12", "https://www.gadgets360.com/oneplus-nord-2t-5g-price-in-india-106885"),
-                        new Phone(null, "DUPA DUPA", "DUPA", "DUPA", "DUPA")
+                        new Phone(null,"SAMSUNG ", "Galaxy Z Fold4", "12", "https://www.samsung.com/pl/smartphones/galaxy-z-fold4/")
                 );
                 for(Phone p: phones){
                     dao.insert(p);

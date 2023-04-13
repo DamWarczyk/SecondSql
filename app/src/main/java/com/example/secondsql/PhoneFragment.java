@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.secondsql.databinding.FragmentItemListBinding;
 import com.example.secondsql.entities.Phone;
@@ -31,12 +33,14 @@ import java.util.concurrent.Executors;
 /**
  * A fragment representing a list of Items.
  */
-public class PhoneFragment extends Fragment {
+public class PhoneFragment extends Fragment implements MyPhoneRecyclerViewAdapter.onItemClickListener {
 
     private FragmentItemListBinding binding;
     private PhoneViewModel phoneViewModel;
     private MyPhoneRecyclerViewAdapter adapter;
     RecyclerView recyclerView;
+
+    private ItemTouchHelper itemTouchHelper;
 
     public PhoneFragment() {
     }
@@ -70,11 +74,11 @@ public class PhoneFragment extends Fragment {
         Executors.newSingleThreadExecutor().execute(() -> {
             if (phoneViewModel.getAllPhones().getValue() == null) {
                 List<Phone> phones = List.of(
+                        new Phone(null,"Pixel", "7 Pro", "14", "https://store.google.com/us/product/pixel_7_pro?hl=en-US"),
+                        new Phone(null, "Samsung", "Galaxy a51", "13", "https://www.samsung.com/pl/smartphones/galaxy-a/galaxy-a53-5g-awesome-blue-128gb-sm-a536blbneue/"),
+                        new Phone(null, "Huawei", "Mate50 PRO", "10", "https://consumer.huawei.com/pl/phones/mate50-pro/"),
                         new Phone(null, "Samsung", "Galaxy S23 Ultra", "13", "https://www.samsung.com/pl/smartphones/galaxy-s23-ultra/buy/"),
-                        new Phone(null,"Huawei", "Mate 20 lite", "10", "https://www.mgsm.pl/pl/katalog/huawei/mate20lite/"),
-                        new Phone(null, "Nokia", "C12 PRO", "12 Go", "https://www.mgsm.pl/pl/katalog/nokia/c12pro/"),
-                        new Phone(null, "Sony", "Xperia J", "4.0 Ice Cream Sandwich", "https://www.mgsm.pl/pl/katalog/sony/xperiaj/"),
-                        new Phone(null,"OnePlus", "Nord 2T 5G", "12", "https://www.gadgets360.com/oneplus-nord-2t-5g-price-in-india-106885")
+                        new Phone(null,"SAMSUNG ", "Galaxy Z Fold4", "12", "https://www.samsung.com/pl/smartphones/galaxy-z-fold4/")
                 );
                 for (Phone p : phones) {
                     phoneViewModel.addPhone(p);
@@ -89,6 +93,37 @@ public class PhoneFragment extends Fragment {
                         .navigate(R.id.action_phoneFragment_to_SecondFragment);
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int adapterPosition = viewHolder.getAdapterPosition();
+                phoneViewModel.deletePhone(adapter.getPhones().get(adapterPosition));
+                Toast toast = Toast.makeText(getContext(), "Phone deleted", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        adapter.setOnItemClickListener(position -> {
+            Phone phone = adapter.getPhones().get(position);
+            final Bundle bundle = new Bundle();
+            bundle.putLong("ID", phone.getId());
+            bundle.putString("PRODUCER", phone.getProducer());
+            bundle.putString("MODEL", phone.getModel());
+            bundle.putString("VERSION", phone.getAndroidVer());
+            bundle.putString("WEBSITE", phone.getWeb());
+            Toast toast = Toast.makeText(view.getContext(), "Phone " + phone.getModel().toString(), Toast.LENGTH_SHORT);
+            toast.show();
+
+            NavHostFragment.findNavController(PhoneFragment.this).navigate(R.id.action_phoneFragment_to_SecondFragment, bundle);
+        });
+
     }
 
     Observer<List<Phone>> phoneListUpdateObserver = new Observer<>() {
@@ -120,5 +155,9 @@ public class PhoneFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClickListener(int position) {
     }
 }
